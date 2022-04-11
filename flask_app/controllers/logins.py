@@ -57,6 +57,16 @@ def homepage():
     login = Login.get_by_id(data) 
     return render_template('homepage.html' , login = login)
 
+@app.route('/profile')
+def profile():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data={
+        'id':session['login_id']
+    }
+    login = Login.get_by_id(data) 
+    return render_template('profile.html', login = login)
+
 @app.route('/logout')
 def logout():
     session.clear()
