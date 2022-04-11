@@ -4,14 +4,18 @@ from flask import redirect, request, session, render_template, flash
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/login')
+def loginpage():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 @app.route('/register', methods = ['POST'])
 def register():
     if not Login.validate_registration(request.form):
-        return redirect('/')
+        return redirect('/signup')
     password_hash = bcrypt.generate_password_hash(request.form['password'])
     print(password_hash)
     data ={
@@ -36,10 +40,10 @@ def login():
     login_data = Login.get_by_email(data)
     if not login_data:
         flash('Invalid Email Address or Password', 'login')
-        return redirect('/')
+        return redirect('/login')
     if not bcrypt.check_password_hash(login_data.password, request.form['password']):
         flash('Invalid Email Address or Password', 'login')
-        return redirect('/')
+        return redirect('/login')
     session['login_id'] = login_data.id
     return redirect('/homepage')
 
@@ -56,4 +60,4 @@ def homepage():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect('/')
+    return redirect('/login')
