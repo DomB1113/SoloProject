@@ -1,3 +1,4 @@
+
 from flask_app.models.login import Login
 from flask_app import app
 from flask import redirect, request, session, render_template, flash
@@ -66,6 +67,26 @@ def profile():
     }
     login = Login.get_by_id(data) 
     return render_template('profile.html', login = login)
+
+@app.route('/update', methods =['POST'])
+def updateProfile():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    if not Login.validate_update(request.form):
+        return redirect('/profile')
+    password_hash = bcrypt.generate_password_hash(request.form['password'])
+    data ={
+        'id': request.form['id'],
+        'username': request.form['username'],
+        'first_name': request.form['first_name'],
+        'last_name': request.form['last_name'],
+        'email': request.form['email'],
+        'birthday': request.form['birthday'],
+        'password': password_hash
+    }
+    Login.update(data)
+    return redirect('/homepage')
+
 
 @app.route('/logout')
 def logout():

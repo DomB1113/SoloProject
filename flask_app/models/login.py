@@ -60,6 +60,41 @@ class Login:
             is_valid = False 
         return is_valid
 
+    @staticmethod
+    def validate_update(data):
+        is_valid = True 
+        if len(data['username'])< 3:
+            flash('Username must be at least 3 letters', 'update')
+            is_valid = False
+        if len(data['first_name'])< 3:
+            flash('First Name must be at least 3 letters', 'update')
+            is_valid = False
+        if len(data['last_name']) < 3:
+            flash('Last Name must be at least 3 letters', 'update')
+            is_valid = False
+        if len(data['email']) < 6:
+            flash('email must be at least 6 letters', 'update')
+            is_valid = False
+        if len(data['birthday']) <7:
+            flash('birthday needs to be filled out', 'update')
+            is_valid = False
+        if len(data['password']) < 6:
+            flash('password needs to be 6 letters or more', 'update')
+            is_valid = False 
+        if data['password'] != data['confirm_password']:
+            flash('Password dont match', 'update')
+            is_valid = False
+        if not EMAIL_REGEX.match(data['email']):
+            flash('Invalid email address')
+            is_valid = False 
+        return is_valid
+
+    @classmethod
+    def update(cls,data):
+        query = "UPDATE logins SET username = %(username)s, first_name = %(first_name)s, last_name = %(last_name)s, email = %(email)s , birthday = %(birthday)s , password = %(password)s  WHERE id = %(id)s "
+        return connectToMySQL(cls.database).query_db(query,data)
+    
+
     @classmethod 
     def get_by_email(cls,data):
         query = "SELECT * FROM logins WHERE email = %(email)s ;"

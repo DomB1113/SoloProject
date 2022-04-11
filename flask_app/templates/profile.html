@@ -8,6 +8,52 @@
     <title>Profile</title>
 </head>
 <body>
-    
+    <div>
+        <h1>Welcome {{login.username}} {{login.first_name}} {{login.last_name}}</h1>
+        <nav>
+            <a href="/homepage">Homepage</a>
+            <a href="/post">Post</a>
+            <a href="/following">Following</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </div>
+    <div>
+        <h1>Edit Profile</h1>
+        <div>
+            <form action="/update" method="POST">
+                {% with messages = get_flashed_messages(category_filter=['update']) %}
+                    {% if messages %}
+                        <ul class="flashes">
+                            {% for message in messages %}
+                                <li>{{message}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}  
+                <input type="hidden" name="id" value="{{login.id}}">
+                <label class="form-label" for="username">Username:</label>
+                <input style="width: 400px;" class="form-control" type="text" name="username" value="{{login.username}}" >
+                <label class="form-label" for="first_name">First Name:</label>
+                <input style="width: 400px;" class="form-control" type="text" name="first_name" value="{{login.first_name}}" >
+                <label class="form-label" for="last_name">Last Name:</label>
+                <input style="width: 400px;" class="form-control" type="text" name="last_name" value="{{login.last_name}}">
+                <label class="form-label" for="email">Email:</label>
+                <input style="width: 400px;" class="form-control" type="text" name="email" value="{{login.email}}" >
+                <label class="form-label" for="birthday">Birthday:</label>
+                <input style="width: 400px;" class="form-control" type="date" name="birthday" value="{{login.birthday}}" >
+                <label class="form-label" for="password">Password:</label>
+                <input style="width: 400px;" class="form-control" type="password" name="password" >
+                <label class="form-label" for="confirm_password">Confirm Password:</label>
+                <input style="width: 400px;" class="form-control" type="password" name="confirm_password" >
+                <input type="submit" value="update">
+            </form>
+        </div>
+        <div>
+            <p>followers stats</p>
+            <!-- have followers -->
+        </div>
+    </div>
+
 </body>
 </html>
