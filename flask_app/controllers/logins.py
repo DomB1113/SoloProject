@@ -90,6 +90,17 @@ def updateProfile():
     Login.update(data)
     return redirect('/homepage')
 
+@app.route('/following')
+def Following():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data={
+        'id':session['login_id']
+    }
+    login = Login.get_by_id(data) 
+    posts = Login.allLoginsFollowings(data)
+    return render_template('following.html', login=login, posts = posts)
+
 
 @app.route('/logout')
 def logout():

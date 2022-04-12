@@ -108,3 +108,15 @@ class Login:
         query = "SELECT * FROM logins WHERE id = %(id)s ;"
         result = connectToMySQL(cls.database).query_db(query,data)
         return cls(result[0])
+
+
+    @classmethod
+    def FollowUser(cls,data):
+        query = "INSERT INTO followings (login_id, follower_id) VALUES (%(login_id)s, %(follower_id)s) ;"
+        return connectToMySQL(cls.database).query_db(query,data)
+    
+    @classmethod
+    def allLoginsFollowings(cls,data):
+        query = "SELECT logins.id as user_id, follow.username, followings.*, posts.* FROM logins JOIN followings on logins.id = login_id JOIN posts on follower_id = posts.login_id JOIN logins as follow on posts.login_id = follow.id where logins.id = %(id)s;"
+        results = connectToMySQL(cls.database).query_db(query,data)
+        return results

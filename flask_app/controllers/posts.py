@@ -27,8 +27,18 @@ def viewPost(id):
     data={
         'id':id
     }
-    post = Post.viewPosts(data)
+    post = Post.viewPostsWithLogin(data)
     return render_template('view_post.html', post = post, login=login)
+
+@app.route('/follow/user', methods = ["POST"])
+def follow_user():
+    data ={
+        'login_id': request.form['login_id'],
+        'follower_id': request.form['follower_id']
+    }
+    Login.FollowUser(data)
+    return redirect('/homepage')
+
 
 @app.route('/post')
 def post():

@@ -36,10 +36,10 @@ class Post:
         return posts 
 
     @classmethod
-    def viewPosts(cls,data):
-        query = "SELECT *  FROM posts where posts.id = %(id)s"
+    def viewPostsWithLogin(cls,data):
+        query = "SELECT posts.*, logins.username, logins.first_name, logins.last_name FROM posts JOIN logins on logins.id = login_id where posts.id = %(id)s; "
         results = connectToMySQL(cls.database).query_db(query,data)
-        return cls(results[0])
+        return results[0]
 
     @classmethod
     def create_post(cls,data):
