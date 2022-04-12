@@ -4,6 +4,31 @@ from flask_app.models.login import Login
 from flask_app import app
 from flask import redirect, request, session, render_template, flash
 
+@app.route('/likepost', methods = ['POST'])
+def likePost():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data = {
+        'post_id':request.form['post_id'],
+        'login_id':request.form['login_id']
+    }
+    Post.likePost(data)
+
+    return redirect('/homepage')
+
+@app.route('/view/post/<int:id>')
+def viewPost(id):
+    if 'login_id' not in session:
+        return redirect('/logout')
+    login_data={
+        'id':session['login_id']
+    }
+    login = Login.get_by_id(login_data) 
+    data={
+        'id':id
+    }
+    post = Post.viewPosts(data)
+    return render_template('view_post.html', post = post, login=login)
 
 @app.route('/post')
 def post():

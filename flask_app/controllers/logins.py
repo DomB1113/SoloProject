@@ -1,4 +1,5 @@
 
+from flask_app.models.post import Post
 from flask_app.models.login import Login
 from flask_app import app
 from flask import redirect, request, session, render_template, flash
@@ -56,7 +57,9 @@ def homepage():
         'id':session['login_id']
     }
     login = Login.get_by_id(data) 
-    return render_template('homepage.html' , login = login)
+    # try to change posts to show cheer count
+    posts = Post.allPostsWithUsers() 
+    return render_template('homepage.html' , login = login , posts=posts)
 
 @app.route('/profile')
 def profile():
