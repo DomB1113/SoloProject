@@ -58,7 +58,7 @@ def homepage():
     }
     login = Login.get_by_id(data) 
     # try to change posts to show cheer count
-    posts = Post.allPostsWithUsers() 
+    posts = Post.allPostsWithUsersAndCheerCount(data) 
     return render_template('homepage.html' , login = login , posts=posts)
 
 @app.route('/profile')
@@ -98,7 +98,7 @@ def Following():
         'id':session['login_id']
     }
     login = Login.get_by_id(data) 
-    posts = Login.allLoginsFollowings(data)
+    posts = Login.allLoginsFollowingWithCheerCount(data)
     return render_template('following.html', login=login, posts = posts)
 
 

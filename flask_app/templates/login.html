@@ -10,7 +10,7 @@
 <body class="container">
     <div >
         <a href="/aboutus">About Us</a>
-        <img style="height: 100px; width: 100px;" src="/Pump/flask_app/static/img/LogoTiger.jpg" alt="PumpLogo">
+        <img style="height: 100px; width: 100px;" src="{{ url_for('static', filename='img/LogoTiger.jpg') }}" alt="PumpLogo">
         <h1>Pump</h1>
         <p>Where Inspiration and Dicipline flourish</p>
         <a href="/signup">Sign up</a>

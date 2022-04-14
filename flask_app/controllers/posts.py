@@ -34,11 +34,18 @@ def viewPost(id):
 def follow_user():
     data ={
         'login_id': request.form['login_id'],
-        'follower_id': request.form['follower_id']
+        'following_id': request.form['following_id']
     }
     Login.FollowUser(data)
     return redirect('/homepage')
 
+@app.route('/unfollow', methods = ["POST"])
+def unfollow_user():
+    data ={
+        'followings_id': request.form['followings_id']
+    }
+    Login.unFollowUser(data)
+    return redirect('/following')
 
 @app.route('/post')
 def post():
@@ -54,8 +61,9 @@ def post():
 def createPost():
     if 'login_id' not in session:
         return redirect('/logout')
+    print(request.form)
     data = {
-        'upload_photo' : request.form['upload_photo'],
+        'title' : request.form['title'],
         'description' : request.form['description'],
         'login_id': session['login_id']
     }

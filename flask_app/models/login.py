@@ -1,3 +1,4 @@
+from flask_app.models.post import Post
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash 
@@ -112,11 +113,63 @@ class Login:
 
     @classmethod
     def FollowUser(cls,data):
-        query = "INSERT INTO followings (login_id, follower_id) VALUES (%(login_id)s, %(follower_id)s) ;"
+        query = "INSERT INTO followings (login_id, following_id) VALUES (%(login_id)s, %(following_id)s) ;"
         return connectToMySQL(cls.database).query_db(query,data)
     
     @classmethod
     def allLoginsFollowings(cls,data):
-        query = "SELECT logins.id as user_id, follow.username, followings.*, posts.* FROM logins JOIN followings on logins.id = login_id JOIN posts on follower_id = posts.login_id JOIN logins as follow on posts.login_id = follow.id where logins.id = %(id)s;"
+        query = "SELECT logins.id as user_id, follow.username, followings.*, posts.* FROM logins JOIN followings on logins.id = login_id JOIN posts on following_id = posts.login_id JOIN logins as follow on posts.login_id = follow.id where logins.id = %(id)s;"
         results = connectToMySQL(cls.database).query_db(query,data)
+        print(results)
         return results
+    
+    @classmethod
+    def allLoginsFollowingWithCheerCount(cls,data):
+        query = """SELECT logins.id as user_id,  followings.*, posts.*,follow.username, cheer_counts.*,posts_cheered_by_user.* FROM logins 
+            JOIN followings on logins.id = login_id 
+            JOIN posts on following_id = posts.login_id 
+            LEFT JOIN (SELECT post_id, COUNT(post_id) as cheer_count FROM cheers GROUP BY post_id) cheer_counts
+            on posts.id = cheer_counts.post_id
+            LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user
+            on posts.id = posts_cheered_by_user.cheer_liked_by_login
+            JOIN logins as follow on posts.login_id = follow.id 
+            where logins.id = %(id)s;"""
+        results = connectToMySQL(cls.database).query_db(query,data)
+        posts = []
+        for post in results:
+            cheer_data = {
+                'post_id': post['post_id'],
+                'cheer_count': post['cheer_count'],
+                'cheer_liked_by_login': post['cheer_liked_by_login']
+            }
+            login_data = {
+                'login_id' : post['login_id'],
+                'username' : post['username'],
+            }
+            post_data={
+                'id' : post['id'],
+                'title' : post['title'],
+                'description' : post['description'],
+                'created_at' : post['created_at'],
+                'login_id' : login_data
+                
+            }
+            this_post_instance = Post(post_data)
+            # push login data into class object
+            this_post_instance.login_id = login_data
+            # push cheer count into class object 
+            if post['cheer_count'] != None:
+                this_post_instance.cheers_count = post['cheer_count']
+            # determine whether login cheered post or not (id if True, None if False)
+            if post['cheer_liked_by_login'] != None:
+                this_post_instance.cheered_by_user = True
+            posts.append((this_post_instance))
+        print("this is Posts Array:", posts)
+        print("this is results",results)
+        return posts 
+    
+
+    @classmethod
+    def unFollowUser(cls,data):
+        query = "DELETE FROM followings WHERE id = %(followings_id)s; "
+        return connectToMySQL(cls.database).query_db(query,data)

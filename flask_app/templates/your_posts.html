@@ -22,7 +22,7 @@
         <h1>Your Posts</h1>
         <div>
             {% for post in posts %}
-                <p>img: {{post.upload_photo}}</p>
+                <p>Tile: {{post.title}}</p>
                 <p>description: {{post.description}}</p>
                 <a href="/delete/post/{{post.id}}">Delete</a>
             {%endfor%}

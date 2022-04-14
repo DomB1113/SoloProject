@@ -22,11 +22,11 @@
         <h1>Viewing Post By {{post.username}} ({{post.first_name}} {{post.last_name}})</h1>
         <form action="/follow/user" method="POST">
             <input type="hidden" name="login_id" value="{{login.id}}">
-            <input type="hidden" name="follower_id" value="{{post.login_id}}">
+            <input type="hidden" name="following_id" value="{{post.login_id}}">
             <input type="submit" value="Follow User">
         </form>
         <div>
-            <p>Image: {{post.upload_photo}}</p>
+            <p>Title: {{post.title}}</p>
             <p>description: {{post.description}}</p>
         </div>
     </div>

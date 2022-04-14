@@ -26,13 +26,17 @@
         <div>
             {%for post in posts %}
                 <p>Username: {{post.login_id.username}}</p>
-                <p>img: {{post.upload_photo}}</p>
+                <p>Title: {{post.title}}</p>
                 <p>description: {{post.description}}</p>
-                <form action="/likepost" method="Post">
-                    <input type="hidden" name="post_id" value="{{post.id}}">
-                    <input type="hidden" name="login_id" value="{{login.id}}">
-                    <input type="submit" value="Cheer!">
-                </form>
+                <p>created at: {{post.created_at}}</p>
+                {%if post.cheered_by_user == false%}
+                    <form action="/likepost" method="Post">
+                        <input type="hidden" name="post_id" value="{{post.id}}">
+                        <input type="hidden" name="login_id" value="{{login.id}}">
+                        <input type="submit" value="Cheer!">
+                    </form>
+                {%endif%}
+                <p>{{post.cheers_count}}</p>
                 <a href="/view/post/{{post.id}}">View Post</a>
             {%endfor%}
         </div>
