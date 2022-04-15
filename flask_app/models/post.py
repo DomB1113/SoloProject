@@ -43,7 +43,8 @@ class Post:
         query = """SELECT posts.*, logins.username, logins.first_name, logins.last_name, cheer_counts.* ,posts_cheered_by_user.* FROM posts 
         JOIN logins on login_id = logins.id 
         LEFT JOIN (SELECT post_id, COUNT(post_id) as cheer_count FROM cheers GROUP BY post_id) cheer_counts on posts.id = cheer_counts.post_id 
-        LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user on posts.id = posts_cheered_by_user.cheer_liked_by_login;"""
+        LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user on posts.id = posts_cheered_by_user.cheer_liked_by_login;""" 
+        # order by in the end
         results = connectToMySQL(cls.database).query_db(query,data)
         posts = []
         for post in results:

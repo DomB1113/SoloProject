@@ -8,14 +8,20 @@
     <title>Sign Up</title>
 </head>
 <body>
-    <div >
-        <a href="/aboutus">About Us</a>
-        <img style="height: 100px; width: 100px;" src="{{ url_for('static', filename='img/LogoTiger.jpg') }}" alt="PumpLogo">
-        <h1>Pump</h1>
-        <p>Where Inspiration and Dicipline flourish</p>
-        <a href="/login">Login</a>
-    </div>
-    <div style="display: flex; margin: 5em;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid" > 
+            <div style=" vertical-align: top; display: inline-block; text-align: center; ">
+                <img style="height: 100px; width: 100px;" src="{{ url_for('static', filename='img/LogoTiger.jpg') }}" alt="PumpLogo">
+                <a style="display: block;" href="/aboutus">About Us</a>
+            </div>
+            <div style=" vertical-align: top; display: inline-block; text-align: center; ">
+                <h1 style="font-size: 3em;" class="navbar-brand">Pump</h1>
+                <p  style="display: block; font-style: italic;">Where Inspiration and Dicipline flourish</p>
+            </div>
+            <a class="btn btn-primary btn-lg" style="box-shadow: 10px 5px 5px black;" href="/login">Login</a>
+        </div>
+    </nav>
+    <div  class="d-flex justify-content-center" style="display: flex; margin: 5em;">
         <form action="/register" method="POST">
             {% with messages = get_flashed_messages(category_filter=['register']) %}
                 {% if messages %}
@@ -26,22 +32,39 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <label class="form-label" for="username">Username:</label>
-            <input class="form-control" type="text" name="username" >
-            <label class="form-label" for="first_name">First Name:</label>
-            <input class="form-control" type="text" name="first_name" >
-            <label class="form-label" for="last_name">Last Name:</label>
-            <input class="form-control" type="text" name="last_name" >
-            <label class="form-label" for="email">Email:</label>
-            <input class="form-control" type="text" name="email" >
-            <label class="form-label" for="birthday">Birthday:</label>
-            <input class="form-control" type="date" name="birthday" >
-            <label class="form-label" for="password">Password:</label>
-            <input class="form-control" type="password" name="password" >
-            <label class="form-label" for="confirm_password">Confirm Password:</label>
-            <input class="form-control" type="password" name="confirm_password" >
-            <input type="submit" value="Register">
+            <div class="input-group mb-3">
+                <label class="input-group-text" id="inputGroup-sizing-default" for="username">Username:</label>
+                <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="text" name="username" >
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" id="inputGroup-sizing-default" for="first_name">First Name:</label>
+                <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="text" name="first_name" >
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text"  id="inputGroup-sizing-default" for="last_name">Last Name:</label>
+                <input class="form-control"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="text" name="last_name" >
+            </div>
+            <div  class="input-group mb-3">
+                <label class="input-group-text" id="inputGroup-sizing-default" for="email">Email:</label>
+                <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="text" name="email" >
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="birthday">Birthday:</label>
+                <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="date" name="birthday" >
+            </div>
+            <div class="input-group mb-3">
+            <label class="input-group-text" for="password">Password:</label>
+            <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="password" name="password" >
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="confirm_password">Confirm Password:</label>
+                <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="password" name="confirm_password" >
+            </div>
+            <div class="row d-flex justify-content-center">
+                <input class="btn btn-danger" style="margin-top: 10px; width: 23rem;"  type="submit" value="Register">
+            </div>
         </form>
     </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>

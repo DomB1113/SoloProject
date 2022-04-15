@@ -134,6 +134,7 @@ class Login:
             on posts.id = posts_cheered_by_user.cheer_liked_by_login
             JOIN logins as follow on posts.login_id = follow.id 
             where logins.id = %(id)s;"""
+            # order by
         results = connectToMySQL(cls.database).query_db(query,data)
         posts = []
         for post in results:
