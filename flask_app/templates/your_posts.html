@@ -8,23 +8,46 @@
     <title>Your Posts</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div>
+                <h3 style="display: inline;">Welcome {{login.username}} </h3>
+                <h5 style="display: inline; font-style: italic;">({{login.first_name}} {{login.last_name}})</h5>
+            </div>
+            <div>
+                <a href="/homepage">Homepage</a>
+                <a href="/post">Post</a>
+                <a href="/following">Following</a>
+                <a href="/profile">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
     <div>
-        <h1>Welcome {{login.username}} {{login.first_name}} {{login.last_name}}</h1>
-        <nav>
-            <a href="/homepage">Homepage</a>
-            <a href="/post">Post</a>
-            <a href="/following">Following</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
-        </nav>
-    </div>
-    <div>
-        <h1>Your Posts</h1>
+        <div class="d-flex justify-content-center" >
+            <div style=" vertical-align: top; display: inline-block; text-align: center;">
+                <h3 style="font-size: 2rem;" class="navbar-brand" >Your Posts</h3>
+            </div>
+        </div>
         <div>
             {% for post in posts %}
-                <p>Tile: {{post.title}}</p>
-                <p>description: {{post.description}}</p>
-                <a href="/delete/post/{{post.id}}">Delete</a>
+            <div class="d-flex justify-content-center">
+                <div style="margin-top: 2rem;" class="card text-center">
+                    <div class="card-header">
+                        <p>{{login.username}}</p>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-decoration: underline;"> {{post.title}}</h5>
+                        <p class="card-text">{{post.description}}</p>
+                        <div class="d-flex justify-content-around">
+                            <a class="btn btn-danger" href="/delete/post/{{post.id}}">Delete</a>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <p >created at: {{post.created_at.strftime('%d-%m-%Y')}}</p>
+                    </div>
+                </div>
+            </div>
             {%endfor%}
         </div>
     </div>

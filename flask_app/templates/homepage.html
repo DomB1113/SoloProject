@@ -54,8 +54,8 @@
                                 <a style="box-shadow: 5px 5px 5px black;"  class="btn btn-secondary" href="/view/post/{{post.id}}">View Post</a>
                             </div>
                         </div>
-                        <div>
-                            <p class="card-footer text-muted">created at: {{post.created_at.strftime('%d-%m-%Y')}}</p>
+                        <div class="card-footer text-muted">
+                            <p >created at: {{post.created_at.strftime('%d-%m-%Y')}}</p>
                         </div>
                     </div>
                 {%endfor%}

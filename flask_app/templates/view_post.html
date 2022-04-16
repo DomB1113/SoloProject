@@ -8,26 +8,46 @@
     <title>View Post</title>
 </head>
 <body>
-    <div>
-        <h1>Welcome {{login.username}} {{login.first_name}} {{login.last_name}}</h1>
-        <nav>
-            <a href="/homepage">Homepage</a>
-            <a href="/post">Post</a>
-            <a href="/following">Following</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
-        </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div>
+                <h3 style="display: inline;">Welcome {{login.username}} </h3>
+                <h5 style="display: inline; font-style: italic;">({{login.first_name}} {{login.last_name}})</h5>
+            </div>
+            <div>
+                <a href="/homepage">Homepage</a>
+                <a href="/post">Post</a>
+                <a href="/following">Following</a>
+                <a href="/profile">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <div class="d-flex justify-content-center" >
+        <div style=" vertical-align: top; display: inline-block; text-align: center;">
+            <h3 style="font-size: 2rem;" class="navbar-brand" >Viewing Post By {{post.username}} ({{post.first_name}} {{post.last_name}})</h3>
+        </div>
     </div>
-    <div>
-        <h1>Viewing Post By {{post.username}} ({{post.first_name}} {{post.last_name}})</h1>
-        <form action="/follow/user" method="POST">
-            <input type="hidden" name="login_id" value="{{login.id}}">
-            <input type="hidden" name="following_id" value="{{post.login_id}}">
-            <input type="submit" value="Follow User">
-        </form>
-        <div>
-            <p>Title: {{post.title}}</p>
-            <p>description: {{post.description}}</p>
+
+    <div class="d-flex justify-content-center">
+        <div style="margin-top: 2rem;" class="card text-center">
+            <div class="card-header">
+                <p>{{post.username}}</p>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" style="text-decoration: underline;"> {{post.title}}</h5>
+                <p class="card-text">{{post.description}}</p>
+                <div class="d-flex justify-content-around">
+                    <form action="/follow/user" method="POST">
+                        <input type="hidden" name="login_id" value="{{login.id}}">
+                        <input type="hidden" name="following_id" value="{{post.login_id}}">
+                        <input style="box-shadow: 5px 5px 5px black;"  class="btn btn-secondary" type="submit" value="Follow User">
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <p >created at: {{post.created_at.strftime('%d-%m-%Y')}}</p>
+            </div>
         </div>
     </div>
 </body>
