@@ -24,6 +24,12 @@
         </div>
     </nav>
     <div class="d-flex justify-content-center">
+        <div  style=" vertical-align: top; display: inline-block; text-align: center;">
+            <h1 style="font-size: 3em;">Your Followings</h1>
+            <p style="display: block; font-style: italic;">See posts from users you follow</p>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
         <div>
             {%for post in posts %}
                 <div style="margin-top: 2rem; width: 25rem;" class="card text-center">
@@ -37,13 +43,13 @@
                             <div class="d-flex">
                                 <p style="margin-right: 1rem; font-style: italic;">{{post.cheers_count}}</p>
                                 {%if post.cheered_by_user == false%}
-                                    <form action="/likepost" method="Post">
+                                    <form action="/likepost/following" method="POST">
                                         <input type="hidden" name="post_id" value="{{post.id}}">
                                         <input type="hidden" name="login_id" value="{{login.id}}">
                                         <input style="box-shadow: 5px 5px 5px black;" class="btn btn-info" type="submit" value="Cheer!">
                                     </form>
                                 {% else %}
-                                    <form action="/unlikepost" method="Post">
+                                    <form action="/unlikepost/following" method="POST">
                                         <input type="hidden" name="post_id" value="{{post.id}}">
                                         <input type="hidden" name="login_id" value="{{login.id}}">
                                         <input style="box-shadow: 5px 5px 5px black;" class="btn btn-danger" type="submit" value="Boo!">

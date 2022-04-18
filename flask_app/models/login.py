@@ -126,7 +126,7 @@ class Login:
     
     @classmethod
     def allLoginsFollowingWithCheerCount(cls,data):
-        query = """SELECT logins.id as user_id,  followings.*, posts.*,follow.username, cheer_counts.*,posts_cheered_by_user.* FROM logins 
+        query = """SELECT logins.id as user_id,  followings.login_id, followings.following_id, posts.*,follow.username, cheer_counts.*,posts_cheered_by_user.* FROM logins 
             JOIN followings on logins.id = login_id 
             JOIN posts on following_id = posts.login_id 
             LEFT JOIN (SELECT post_id, COUNT(post_id) as cheer_count FROM cheers GROUP BY post_id) cheer_counts
@@ -166,7 +166,7 @@ class Login:
             if post['cheer_liked_by_login'] != None:
                 this_post_instance.cheered_by_user = True
             posts.append((this_post_instance))
-        print("this is Posts Array:", posts)
+        # print("this is Posts Array:", posts)
         print("this is results",results)
         return posts 
     
@@ -177,7 +177,7 @@ class Login:
             JOIN logins as follow on followings.following_id = follow.id 
             where logins.id = %(id)s;"""
         results = connectToMySQL(cls.database).query_db(query,data)
-        print(results)
+        # print(results)
         return results
 
     @classmethod
@@ -187,10 +187,10 @@ class Login:
             JOIN logins as follow on followings.login_id = follow.id 
             where following_id = %(id)s;"""
         results = connectToMySQL(cls.database).query_db(query,data)
-        print(results)
+        # print(results)
         return results
 
-        
+
     @classmethod
     def unFollowUser(cls,data):
         query = "DELETE FROM followings WHERE id = %(followings_id)s; "

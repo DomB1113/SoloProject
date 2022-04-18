@@ -26,6 +26,27 @@ def unlikePost():
     Post.unlikePost(data)
     return redirect('/homepage')
 
+@app.route('/likepost/following', methods = ['POST'])
+def likePostfollowing():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data = {
+        'post_id':request.form['post_id'],
+        'login_id':request.form['login_id']
+    }
+    Post.likePost(data)
+    return redirect('/following')
+
+@app.route('/unlikepost/following', methods = ['POST'])
+def unlikePostfollowing():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data = {
+        'post_id':request.form['post_id'],
+        'login_id':request.form['login_id']
+    }
+    Post.unlikePost(data)
+    return redirect('/following')
 
 @app.route('/view/post/<int:id>')
 def viewPost(id):
@@ -36,10 +57,33 @@ def viewPost(id):
     }
     login = Login.get_by_id(login_data) 
     data={
-        'id':id
+        'id':session['login_id'],
+        'post_id': id
     }
-    post = Post.viewPostsWithLogin(data)
+    post = Post.viewPostWithLoginWithCheers(data)
     return render_template('view_post.html', post = post, login=login)
+
+@app.route('/likepost/viewing', methods = ['POST'])
+def likeViewedPost():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data = {
+        'post_id':request.form['post_id'],
+        'login_id':request.form['login_id']
+    }
+    Post.likePost(data)
+    return redirect(f"/view/post/{request.form['post_id']}")
+
+@app.route('/unlikepost/viewing', methods = ['POST'])
+def unlikeViewedPost():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data = {
+        'post_id':request.form['post_id'],
+        'login_id':request.form['login_id']
+    }
+    Post.unlikePost(data)
+    return redirect(f"/view/post/{request.form['post_id']}")
 
 @app.route('/follow/user', methods = ["POST"])
 def follow_user():

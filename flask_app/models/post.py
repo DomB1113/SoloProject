@@ -35,7 +35,7 @@ class Post:
                 'login_id' : login_data
             }
             posts.append((post_data))
-        print(posts)
+        # print(posts)
         return posts 
     #  here
     @classmethod 
@@ -78,8 +78,8 @@ class Post:
             if post['cheer_liked_by_login'] != None:
                 this_post_instance.cheered_by_user = True
             posts.append((this_post_instance))
-        print("this is Posts Array:", posts)
-        print("this is results",results)
+        # print("this is Posts Array:", posts)
+        # print("this is results",results)
         return posts 
 
 
@@ -89,17 +89,37 @@ class Post:
         results = connectToMySQL(cls.database).query_db(query,data)
         return results[0]
 
-    # @classmethod
-    # def viewPostWithLoginWithCheers(cls,data):
-    #     query = """SELECT posts.*, logins.username, logins.first_name, logins.last_name, cheer_counts.*,posts_cheered_by_user.* FROM posts 
-    #         JOIN logins on logins.id = login_id 
-    #         LEFT JOIN (SELECT post_id, COUNT(post_id) as cheer_count FROM cheers GROUP BY post_id) cheer_counts
-    #         on posts.id = cheer_counts.post_id
-    #         LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user
-    #         on posts.id = posts_cheered_by_user.cheer_liked_by_login
-    #         where posts.id = %(post_id)s;"""
-    #     results = connectToMySQL(cls.database).query_db(query,data)
-    #     return results[0]
+    @classmethod
+    def viewPostWithLoginWithCheers(cls,data):
+        query = """SELECT posts.*, logins.username, logins.first_name, logins.last_name, cheer_counts.*, posts_cheered_by_user.* FROM posts
+        JOIN logins on logins.id = login_id 
+        LEFT JOIN (SELECT post_id, COUNT(post_id) as cheer_count FROM cheers GROUP BY post_id) cheer_counts on posts.id = cheer_counts.post_id 
+        LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user on posts.id = posts_cheered_by_user.cheer_liked_by_login
+        where posts.id = %(post_id)s;"""
+        results = connectToMySQL(cls.database).query_db(query,data)
+        this_post_instance = cls(results[0])
+        # print(results)
+        # print(results[0])
+        # print(results[0]['cheer_count'])
+        cheer_data = {
+                'post_id': results[0]['post_id'],
+                'cheer_count': results[0]['cheer_count'],
+                'cheer_liked_by_login': results[0]['cheer_liked_by_login']
+            }
+        login_data = {
+                'login_id' : results[0]['login_id'],
+                'username' : results[0]['username'],
+                'first_name' : results[0]['first_name'],
+                'last_name' : results[0]['last_name']
+            }
+        if cheer_data['cheer_count'] != None:
+            this_post_instance.cheers_count = cheer_data['cheer_count']
+        # determine whether login cheered post or not (id if True, None if False)
+        if cheer_data['cheer_liked_by_login'] != None:
+            this_post_instance.cheered_by_user = True
+        print(this_post_instance.cheers_count)
+        this_post_instance.login_id = login_data
+        return this_post_instance
 
     @classmethod
     def create_post(cls,data):

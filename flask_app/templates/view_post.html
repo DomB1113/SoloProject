@@ -25,22 +25,37 @@
     </nav>
     <div class="d-flex justify-content-center" >
         <div style=" vertical-align: top; display: inline-block; text-align: center;">
-            <h3 style="font-size: 2rem;" class="navbar-brand" >Viewing Post By {{post.username}} ({{post.first_name}} {{post.last_name}})</h3>
+            <h3 style="font-size: 2rem;" class="navbar-brand" >Viewing Post By {{post.login_id.first_name}} {{post.login_id.last_name}} ({{post.login_id.username}})</h3>
         </div>
     </div>
-
     <div class="d-flex justify-content-center">
         <div style="margin-top: 2rem; width: 25rem;" class="card text-center">
             <div class="card-header">
-                <p>{{post.username}}</p>
+                <p>Username: {{post.login_id.username}}</p>
             </div>
             <div class="card-body">
                 <h5 class="card-title" style="text-decoration: underline;"> {{post.title}}</h5>
                 <p class="card-text">{{post.description}}</p>
                 <div class="d-flex justify-content-around">
+                    <div class="d-flex">
+                        <p style="margin-right: 1rem; font-style: italic;">{{post.cheers_count}}</p>
+                        {%if post.cheered_by_user == false%}
+                            <form action="/likepost/viewing" method="Post">
+                                <input type="hidden" name="post_id" value="{{post.id}}">
+                                <input type="hidden" name="login_id" value="{{login.id}}">
+                                <input style="box-shadow: 5px 5px 5px black;" class="btn btn-info" type="submit" value="Cheer!">
+                            </form>
+                        {% else %}
+                            <form action="/unlikepost/viewing" method="Post">
+                                <input type="hidden" name="post_id" value="{{post.id}}">
+                                <input type="hidden" name="login_id" value="{{login.id}}">
+                                <input style="box-shadow: 5px 5px 5px black;" class="btn btn-danger" type="submit" value="Boo!">
+                            </form>
+                        {%endif%}
+                    </div>
                     <form action="/follow/user" method="POST">
                         <input type="hidden" name="login_id" value="{{login.id}}">
-                        <input type="hidden" name="following_id" value="{{post.login_id}}">
+                        <input type="hidden" name="following_id" value="{{post.login_id.login_id}}">
                         <input style="box-shadow: 5px 5px 5px black;"  class="btn btn-secondary" type="submit" value="Follow User">
                     </form>
                 </div>
@@ -48,7 +63,6 @@
             <div class="card-footer text-muted">
                 <p >created at: {{post.created_at.strftime('%d-%m-%Y')}}</p>
             </div>
-        </div>
     </div>
 </body>
 </html>
