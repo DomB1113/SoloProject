@@ -52,12 +52,13 @@
                                     <form action="/unlikepost/following" method="POST">
                                         <input type="hidden" name="post_id" value="{{post.id}}">
                                         <input type="hidden" name="login_id" value="{{login.id}}">
-                                        <input style="box-shadow: 5px 5px 5px black;" class="btn btn-danger" type="submit" value="Boo!">
+                                        <input style="box-shadow: 5px 5px 5px black;" class="btn btn-secondary" type="submit" value="Cheer">
                                     </form>
                                 {%endif%}
                             </div>
                             <form action="/unfollow" method="POST">
-                                <input type="hidden" name="followings_id" value="{{post.id}}">
+                                <input type="hidden" name="login_id" value="{{post.login_id.login_id}}">
+                                <input type="hidden" name="following_id" value="{{post.login_id.following_id}}">
                                 <input style="box-shadow: 5px 5px 5px black;"  class="btn btn-secondary" type="submit" value="Unfollow">
                             </form>
                         </div>

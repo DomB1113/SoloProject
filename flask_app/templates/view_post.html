@@ -49,7 +49,7 @@
                             <form action="/unlikepost/viewing" method="Post">
                                 <input type="hidden" name="post_id" value="{{post.id}}">
                                 <input type="hidden" name="login_id" value="{{login.id}}">
-                                <input style="box-shadow: 5px 5px 5px black;" class="btn btn-danger" type="submit" value="Boo!">
+                                <input style="box-shadow: 5px 5px 5px black;" class="btn btn-secondary" type="submit" value="Cheer">
                             </form>
                         {%endif%}
                     </div>
@@ -58,7 +58,7 @@
                         <input type="hidden" name="following_id" value="{{post.login_id.login_id}}">
                         <input style="box-shadow: 5px 5px 5px black;"  class="btn btn-secondary" type="submit" value="Follow User">
                     </form>
-                </div>
+                </div> 
             </div>
             <div class="card-footer text-muted">
                 <p >created at: {{post.created_at.strftime('%d-%m-%Y')}}</p>

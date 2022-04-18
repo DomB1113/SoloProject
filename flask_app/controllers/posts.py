@@ -99,7 +99,8 @@ def follow_user():
 @app.route('/unfollow', methods = ["POST"]) # route to unfollow user in following html
 def unfollow_user():
     data ={ # data dictionary for which login to remover from table
-        'followings_id': request.form['followings_id']
+        'followings_id': request.form['following_id'],
+        'login_id': request.form['login_id']
     }
     Login.unFollowUser(data) # unfollow class method 
     return redirect('/following')

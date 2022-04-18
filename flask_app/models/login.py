@@ -145,6 +145,7 @@ class Login:
             login_data = {
                 'login_id' : post['login_id'],
                 'username' : post['username'],
+                'following_id': post['following_id']
             }
             post_data={
                 'id' : post['id'],
@@ -195,5 +196,5 @@ class Login:
 
     @classmethod
     def unFollowUser(cls,data): #this erases a following from the table unfollowing the user
-        query = "DELETE FROM followings WHERE id = %(followings_id)s; "
+        query = "DELETE FROM followings WHERE following_id = %(followings_id)s AND login_id =%(login_id)s; "
         return connectToMySQL(cls.database).query_db(query,data)
