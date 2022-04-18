@@ -1,18 +1,18 @@
-from sqlite3 import connect
-from flask_app.models.post import Post
-from flask_app import app
-from flask_app.config.mysqlconnection import connectToMySQL
-from flask import flash 
+
+from flask_app.models.post import Post #importing Posts class 
+from flask_app import app # importing app from __init__.py 
+from flask_app.config.mysqlconnection import connectToMySQL #importing connectToMySQL 
+from flask import flash #importing flash from flask for validation messages 
 import re
 
-from flask_bcrypt import Bcrypt        
+from flask_bcrypt import Bcrypt  #importing Bcrypt for password hashing (install flash-bcrypt in command)      
 bcrypt = Bcrypt(app)     # we are creating an object called bcrypt, 
                         # which is made by invoking the function Bcrypt with our app as an argument
 
-EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') #importing re to compile a template for email addresses
 class Login:
-    database = "pump_schema"
-    def __init__(self,data):
+    database = "pump_schema" #cls.database name 
+    def __init__(self,data): #__init__  for login class
         self.id = data['id']
         self.username = data['username']
         self.first_name = data['first_name']
@@ -24,17 +24,17 @@ class Login:
         self.updated_at = data['updated_at']
     
     @classmethod 
-    def insert(cls,data):
+    def insert(cls,data): #MySQL query for inserting a new Login
         query = "INSERT INTO logins (username,first_name,last_name,email,birthday,password) VALUES (%(username)s, %(first_name)s , %(last_name)s , %(email)s, %(birthday)s , %(password)s) ;"
         return connectToMySQL(cls.database).query_db(query,data)
 
-    @staticmethod
+    @staticmethod # MySQL query for validating a new Login 
     def validate_registration(data):
-        is_valid = True 
-        query = "SELECT * FROM  logins WHERE email = %(email)s ;"
+        is_valid = True  # states variable that will be returned after if validations
+        query = "SELECT * FROM  logins WHERE email = %(email)s ;" # checks if email is already in the database 
         results = connectToMySQL('pump_schema').query_db(query,data)
-        if len(results)>= 1:
-            flash("Email is already taken", 'register')
+        if len(results)>= 1: # if statement to check if email is already in the database 
+            flash("Email is already taken", 'register') 
             is_valid = False
         if len(data['username'])< 3:
             flash('Username must be at least 3 letters', 'register')
@@ -62,8 +62,8 @@ class Login:
             is_valid = False 
         return is_valid
 
-    @staticmethod
-    def validate_update(data):
+    @staticmethod 
+    def validate_update(data): #validation for updating profile in profile.html
         is_valid = True 
         if len(data['username'])< 3:
             flash('Username must be at least 3 letters', 'update')
@@ -86,19 +86,19 @@ class Login:
         if data['password'] != data['confirm_password']:
             flash('Password dont match', 'update')
             is_valid = False
-        if not EMAIL_REGEX.match(data['email']):
+        if not EMAIL_REGEX.match(data['email']): #if email does not match existing email
             flash('Invalid email address')
             is_valid = False 
         return is_valid
 
     @classmethod
-    def update(cls,data):
+    def update(cls,data): #updating login information
         query = "UPDATE logins SET username = %(username)s, first_name = %(first_name)s, last_name = %(last_name)s, email = %(email)s , birthday = %(birthday)s , password = %(password)s  WHERE id = %(id)s "
         return connectToMySQL(cls.database).query_db(query,data)
     
 
     @classmethod 
-    def get_by_email(cls,data):
+    def get_by_email(cls,data): #getting login information with email 
         query = "SELECT * FROM logins WHERE email = %(email)s ;"
         results = connectToMySQL(cls.database).query_db(query,data)
         if len(results) < 1:
@@ -106,26 +106,24 @@ class Login:
         return cls(results[0])
 
     @classmethod 
-    def get_by_id(cls,data):
+    def get_by_id(cls,data):#getting login information with id
         query = "SELECT * FROM logins WHERE id = %(id)s ;"
         result = connectToMySQL(cls.database).query_db(query,data)
         return cls(result[0])
 
 
-    @classmethod
-    def FollowUser(cls,data):
-        query = "INSERT INTO followings (login_id, following_id) VALUES (%(login_id)s, %(following_id)s) ;"
-        return connectToMySQL(cls.database).query_db(query,data)
     
     @classmethod
-    def allLoginsFollowings(cls,data):
+    def allLoginsFollowings(cls,data): #getting all the followers information based on the logins following 
         query = "SELECT logins.id as user_id, follow.username, followings.*, posts.* FROM logins JOIN followings on logins.id = login_id JOIN posts on following_id = posts.login_id JOIN logins as follow on posts.login_id = follow.id where logins.id = %(id)s;"
         results = connectToMySQL(cls.database).query_db(query,data)
         print(results)
-        return results
+        return results #this classmethod was not used instead allLoginsFOllowingWithCheerCOunt was used 
     
     @classmethod
-    def allLoginsFollowingWithCheerCount(cls,data):
+    def allLoginsFollowingWithCheerCount(cls,data): 
+        #this grabs all logins followers information with the amount of cheers each post has
+        #and if the user has liked the post or not
         query = """SELECT logins.id as user_id,  followings.login_id, followings.following_id, posts.*,follow.username, cheer_counts.*,posts_cheered_by_user.* FROM logins 
             JOIN followings on logins.id = login_id 
             JOIN posts on following_id = posts.login_id 
@@ -170,7 +168,7 @@ class Login:
         print("this is results",results)
         return posts 
     
-    @classmethod
+    @classmethod #this method is used to grab how many users the login is following
     def loginsFollowings(cls,data):
         query = """SELECT logins.id as user_id,  followings.*, follow.username FROM logins 
             JOIN followings on logins.id = login_id 
@@ -180,7 +178,7 @@ class Login:
         # print(results)
         return results
 
-    @classmethod
+    @classmethod #this method is used to grab how many users are following the login 
     def followsLogin(cls,data):
         query= """SELECT logins.id as user_id,  followings.*, follow.username FROM logins 
             JOIN followings on logins.id = login_id 
@@ -190,8 +188,12 @@ class Login:
         # print(results)
         return results
 
+    @classmethod
+    def FollowUser(cls,data): #following another user by grabbing login id and another login id as following_id and placing them in the followings table
+        query = "INSERT INTO followings (login_id, following_id) VALUES (%(login_id)s, %(following_id)s) ;"
+        return connectToMySQL(cls.database).query_db(query,data)
 
     @classmethod
-    def unFollowUser(cls,data):
+    def unFollowUser(cls,data): #this erases a following from the table unfollowing the user
         query = "DELETE FROM followings WHERE id = %(followings_id)s; "
         return connectToMySQL(cls.database).query_db(query,data)
