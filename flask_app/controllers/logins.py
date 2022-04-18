@@ -57,7 +57,7 @@ def homepage():
         'id':session['login_id']
     }
     login = Login.get_by_id(data) 
-    # try to change posts to show cheer count
+    # try to change post by using order by for current posts on the top 
     posts = Post.allPostsWithUsersAndCheerCount(data) 
     return render_template('homepage.html' , login = login , posts=posts)
 
@@ -69,7 +69,9 @@ def profile():
         'id':session['login_id']
     }
     login = Login.get_by_id(data) 
-    return render_template('profile.html', login = login)
+    followings = Login.loginsFollowings(data)
+    follows = Login.followsLogin(data)
+    return render_template('profile.html', login = login, num_of_following = len(followings), num_of_followers = len(follows) )
 
 @app.route('/update', methods =['POST'])
 def updateProfile():

@@ -43,7 +43,8 @@ class Post:
         query = """SELECT posts.*, logins.username, logins.first_name, logins.last_name, cheer_counts.* ,posts_cheered_by_user.* FROM posts 
         JOIN logins on login_id = logins.id 
         LEFT JOIN (SELECT post_id, COUNT(post_id) as cheer_count FROM cheers GROUP BY post_id) cheer_counts on posts.id = cheer_counts.post_id 
-        LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user on posts.id = posts_cheered_by_user.cheer_liked_by_login;""" 
+        LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user on posts.id = posts_cheered_by_user.cheer_liked_by_login
+        ORDER BY posts.created_at DESC;""" 
         # order by in the end
         results = connectToMySQL(cls.database).query_db(query,data)
         posts = []
@@ -107,7 +108,7 @@ class Post:
     
     @classmethod
     def yourPosts(cls,data):
-        query = "SELECT * FROM posts WHERE login_id = %(login_id)s;"
+        query = "SELECT * FROM posts WHERE login_id = %(login_id)s ORDER BY posts.created_at DESC;"
         results = connectToMySQL(cls.database).query_db(query,data)
         return results
 
@@ -119,6 +120,11 @@ class Post:
     @classmethod
     def likePost(cls,data):
         query = "INSERT INTO cheers (post_id,login_id) VALUES (%(post_id)s,%(login_id)s) ;"
+        return connectToMySQL(cls.database).query_db(query,data)
+    
+    @classmethod
+    def unlikePost(cls,data):
+        query = "DELETE FROM cheers WHERE login_id = %(login_id)s AND post_id = %(post_id)s ;"
         return connectToMySQL(cls.database).query_db(query,data)
     
     @classmethod

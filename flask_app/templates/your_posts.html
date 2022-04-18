@@ -11,8 +11,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <div>
-                <h3 style="display: inline;">Welcome {{login.username}} </h3>
-                <h5 style="display: inline; font-style: italic;">({{login.first_name}} {{login.last_name}})</h5>
+                <h3 style="display: inline;">Welcome {{login.first_name}} {{login.last_name}}  </h3>
+                <h5 style="display: inline; font-style: italic;">({{login.username}})</h5>
             </div>
             <div>
                 <a href="/homepage">Homepage</a>
@@ -32,7 +32,7 @@
         <div>
             {% for post in posts %}
             <div class="d-flex justify-content-center">
-                <div style="margin-top: 2rem;" class="card text-center">
+                <div style="margin-top: 2rem; width: 25rem;" class="card text-center">
                     <div class="card-header">
                         <p>{{login.username}}</p>
                     </div>
@@ -40,7 +40,7 @@
                         <h5 class="card-title" style="text-decoration: underline;"> {{post.title}}</h5>
                         <p class="card-text">{{post.description}}</p>
                         <div class="d-flex justify-content-around">
-                            <a class="btn btn-danger" href="/delete/post/{{post.id}}">Delete</a>
+                            <a class="btn btn-danger" style="box-shadow: 6px 4px 4px black;" href="/delete/post/{{post.id}}">Delete</a>
                         </div>
                     </div>
                     <div class="card-footer text-muted">

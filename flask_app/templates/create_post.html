@@ -11,8 +11,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <div>
-                <h3 style="display: inline;">Welcome {{login.username}} </h3>
-                <h5 style="display: inline; font-style: italic;">({{login.first_name}} {{login.last_name}})</h5>
+                <h3 style="display: inline;">Welcome {{login.first_name}} {{login.last_name}} </h3>
+                <h5 style="display: inline; font-style: italic;">({{login.username}})</h5>
             </div>
             <div>
                 <a href="/homepage">Homepage</a>
@@ -42,7 +42,7 @@
                     </textarea>
                 </div>
                 <div class="row d-flex justify-content-center">
-                    <input style="margin-top: 10px; width: 25rem;" class="btn btn-danger" type="submit" value="Create">
+                    <input style="margin-top: 10px; width: 25rem; box-shadow: 10px 5px 5px black;" class="btn btn-danger" type="submit" value="Create">
                 </div>
             </form>
         </div>

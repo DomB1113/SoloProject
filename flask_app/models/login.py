@@ -1,3 +1,4 @@
+from sqlite3 import connect
 from flask_app.models.post import Post
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
@@ -133,7 +134,7 @@ class Login:
             LEFT JOIN (SELECT post_id as cheer_liked_by_login FROM cheers WHERE login_id = %(id)s) posts_cheered_by_user
             on posts.id = posts_cheered_by_user.cheer_liked_by_login
             JOIN logins as follow on posts.login_id = follow.id 
-            where logins.id = %(id)s;"""
+            where logins.id = %(id)s ORDER BY posts.created_at DESC;"""
             # order by
         results = connectToMySQL(cls.database).query_db(query,data)
         posts = []
@@ -169,7 +170,27 @@ class Login:
         print("this is results",results)
         return posts 
     
+    @classmethod
+    def loginsFollowings(cls,data):
+        query = """SELECT logins.id as user_id,  followings.*, follow.username FROM logins 
+            JOIN followings on logins.id = login_id 
+            JOIN logins as follow on followings.following_id = follow.id 
+            where logins.id = %(id)s;"""
+        results = connectToMySQL(cls.database).query_db(query,data)
+        print(results)
+        return results
 
+    @classmethod
+    def followsLogin(cls,data):
+        query= """SELECT logins.id as user_id,  followings.*, follow.username FROM logins 
+            JOIN followings on logins.id = login_id 
+            JOIN logins as follow on followings.login_id = follow.id 
+            where following_id = %(id)s;"""
+        results = connectToMySQL(cls.database).query_db(query,data)
+        print(results)
+        return results
+
+        
     @classmethod
     def unFollowUser(cls,data):
         query = "DELETE FROM followings WHERE id = %(followings_id)s; "

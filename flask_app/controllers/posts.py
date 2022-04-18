@@ -13,8 +13,19 @@ def likePost():
         'login_id':request.form['login_id']
     }
     Post.likePost(data)
-
     return redirect('/homepage')
+
+@app.route('/unlikepost', methods = ['POST'])
+def unlikePost():
+    if 'login_id' not in session:
+        return redirect('/logout')
+    data = {
+        'post_id':request.form['post_id'],
+        'login_id':request.form['login_id']
+    }
+    Post.unlikePost(data)
+    return redirect('/homepage')
+
 
 @app.route('/view/post/<int:id>')
 def viewPost(id):
