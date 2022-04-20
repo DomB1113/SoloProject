@@ -5,10 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/generalbackground.css') }}">
     <title>Create Post</title>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="bodyBackground">
+    <div class="containerBackground">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <p>Push Foward</p>
+    </div>
+</div>
+<body class="backgroundForContent">
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning content">
         <div class="container-fluid">
             <div>
                 <h3 style="display: inline;">Welcome {{login.first_name}} {{login.last_name}} </h3>
@@ -23,28 +32,30 @@
             </div>
         </div>
     </nav>
-    <div class="d-flex justify-content-center" >
-        <div style=" vertical-align: top; display: inline-block; text-align: center;">
-            <h3 style="font-size: 2rem;" class="navbar-brand" >Create Post</h3>
-            <a class="btn btn-secondary" style="box-shadow: 5px 5px 5px black;"  href="/your/posts">Your Posts</a>
+    <div class="content2">
+        <div class="d-flex justify-content-center" style="margin-top: 6em;" >
+            <div style=" vertical-align: top; display: inline-block; text-align: center;">
+                <h3 style="font-size: 2rem;  color: #fbff24;" class="navbar-brand" >Create Post</h3>
+                <a class="btn btn-secondary" style="box-shadow: 5px 5px 5px #fbff24; "  href="/your/posts">Your Posts</a>
+            </div>
         </div>
-    </div>
-    <div>
-        <div class="d-flex justify-content-center" style="display: flex; margin: 5em; margin-top: 5rem;">
-            <form action="/create/post" method="POST">
-                <div  class="input-group mb-3">
-                    <label class="input-group-text" id="inputGroup-sizing-default" for="title">Title:</label>
-                    <input class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="text" name="title" id="">
-                </div>
-                <div  class="input-group mb-3">
-                    <label class="input-group-text" id="inputGroup-sizing-default" for="description">description</label>
-                    <textarea  style="width: 20rem; height: 11rem;" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"  type="text" name="description">
-                    </textarea>
-                </div>
-                <div class="row d-flex justify-content-center">
-                    <input style="margin-top: 10px; width: 25rem; box-shadow: 10px 5px 5px black;" class="btn btn-danger" type="submit" value="Create">
-                </div>
-            </form>
+        <div>
+            <div class="d-flex justify-content-center" style="display: flex; margin: 5em; margin-top: 5rem; ">
+                <form action="/create/post" method="POST">
+                    <div class="input-group mb-3">
+                        <label  style="background-color: rgba(37, 37, 37, 0.329); color: white;"class="input-group-text" id="inputGroup-sizing-default" for="title">Title:</label>
+                        <input style="background-color: rgba(37, 37, 37, 0.329); color: white;" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" type="text" name="title" id="">
+                    </div>
+                    <div  class="input-group mb-3">
+                        <label style="background-color: rgba(37, 37, 37, 0.329); color: white;" class="input-group-text" id="inputGroup-sizing-default" for="description">description</label>
+                        <textarea  style="width: 20rem; height: 11rem; background-color: rgba(37, 37, 37, 0.329); color: white;" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"  type="text" name="description">
+                        </textarea>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <input style="margin-top: 10px; width: 25rem; box-shadow: 10px 5px 5px  #fbff24;" class="btn btn-danger" type="submit" value="Create">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>
